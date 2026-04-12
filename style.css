@@ -1,0 +1,76 @@
+* {
+    margin: 0; padding: 0; box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #ee4d2d 0%, #ff7337 100%);
+    min-height: 100vh;
+    display: flex; justify-content: center; align-items: center;
+    position: relative; padding: 20px;
+}
+
+.container {
+    background: white; padding: 30px 20px; border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    text-align: center; width: 100%; max-width: 450px; z-index: 1;
+}
+
+.hidden { display: none; }
+.text-left { text-align: left; }
+
+.main-icon { font-size: 50px; color: #ee4d2d; margin-bottom: 15px; }
+h1 { font-size: 22px; margin-bottom: 20px; color: #333; }
+h2 { font-size: 18px; color: #ee4d2d; margin-bottom: 15px; }
+
+/* Nút bấm chính */
+.menu-buttons { display: flex; flex-direction: column; gap: 15px; }
+.btn-main {
+    padding: 15px; border: none; border-radius: 12px;
+    font-size: 16px; font-weight: bold; color: white;
+    cursor: pointer; transition: 0.3s;
+}
+.orange { background: #ee4d2d; }
+.blue { background: #0056b3; }
+.btn-main:hover { opacity: 0.9; transform: scale(1.02); }
+
+/* Các bước xử lý */
+.alert-box {
+    background: #fff5f5; border: 1px solid #feb2b2;
+    padding: 15px; border-radius: 10px; color: #c53030;
+    margin-bottom: 20px; font-weight: 500;
+}
+
+.step-list { list-style: none; margin-bottom: 15px; }
+.step-list li { margin-bottom: 10px; font-size: 14px; color: #444; }
+
+.copy-box {
+    background: #f1f1f1; padding: 12px; border-radius: 8px;
+    margin: 10px 0 20px 0; font-size: 13px; color: #555;
+}
+
+.btn-copy {
+    margin-top: 10px; background: #4a5568; color: white;
+    border: none; padding: 6px 12px; border-radius: 5px;
+    font-size: 12px; cursor: pointer;
+}
+
+.btn-back {
+    margin-top: 15px; background: none; border: 1px solid #ccc;
+    padding: 8px 20px; border-radius: 20px; cursor: pointer; color: #888;
+}
+
+.qr-container img {
+    width: 100%; max-width: 250px; border: 5px solid #eee; border-radius: 10px;
+}
+
+.copyright {
+    margin-top: 25px; font-size: 11px; color: #ccc; border-top: 1px solid #eee; padding-top: 10px;
+}
+
+/* Decor logo nền */
+.bg-logo {
+    position: absolute; color: rgba(255,255,255,0.1); font-size: 4rem; z-index: 0;
+}
+.logo-1 { top: 5%; left: 5%; }
+.logo-2 { bottom: 5%; right: 5%; }

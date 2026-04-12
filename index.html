@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hỗ trợ Shipper ShopeeFood</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+
+    <i class="fa-solid fa-utensils bg-logo logo-1"></i>
+    <i class="fa-solid fa-motorcycle bg-logo logo-2"></i>
+    <i class="fa-solid fa-bag-shopping bg-logo logo-3"></i>
+    <i class="fa-solid fa-bowl-food bg-logo logo-4"></i>
+
+    <div class="container">
+        <div class="main-icon">
+            <i class="fa-solid fa-truck-fast"></i>
+        </div>
+
+        <div id="home-section">
+            <h1>Trợ giúp Shipper ShopeeFood</h1>
+            <div class="menu-buttons">
+                <button class="btn-main orange" onclick="showSection('qr-section')">
+                    <i class="fa-solid fa-qrcode"></i> Mã QR thanh toán
+                </button>
+                <button class="btn-main blue" onclick="showSection('step-0')">
+                    <i class="fa-solid fa-clipboard-list"></i> Cách xử lý đơn hàng
+                </button>
+            </div>
+        </div>
+
+        <div id="qr-section" class="hidden">
+            <h1>Mã QR Của Tôi</h1>
+            <div class="qr-container">
+                <img src="machuyentien.jpg" alt="Mã QR Thanh Toán">
+            </div>
+            <button class="btn-back" onclick="showSection('home-section')">Quay lại</button>
+        </div>
+
+        <div id="step-0" class="hidden">
+            <h1>Xử lý sự cố</h1>
+            <div class="alert-box">
+                Quẹt "ĐÃ ĐẾN ĐIỂM GIAO" và gọi khách khoảng 2 cuộc không bắt máy!!.
+            </div>
+
+            <button class="btn-back" onclick="showSection('home-section')">Quay lại</button>
+            <button class="btn-main orange" onclick="showSection('step-1-4')">Tiếp theo</button>
+        </div>
+
+        <div id="step-1-4" class="hidden text-left">
+            <h2>Quy trình xử lý:</h2>
+            <ul class="step-list">
+                <li><strong>1.</strong> Bình tĩnh.</li>
+                <li><strong>2.</strong> Gọi ít nhất 3 cuộc (đầu và cuối cách nhau 10p). Chụp màn hình có đủ cuộc gọi và
+                    SĐT khách.</li>
+                <li><strong>3.</strong> Chụp ảnh món ăn hiển thị đủ món và số lượng.</li>
+                <li><strong>4.</strong> Báo cáo hệ thống, giữ hàng 60p và gửi tin nhắn sau:</li>
+            </ul>
+
+            <div class="copy-box">
+                <p id="msg-1">Em đã đến điểm giao, đã cố gắng liên hệ cho anh/ chị nhưng không nhận được phản hồi trong
+                    thời gian 10 phút. Em xin phép chuyển đơn sang trạng thái chờ giao trong 60 phút tiếp theo. Anh/ Chị
+                    có nhu cầu nhận hàng vui lòng liên hệ lại cho số điện thoại để được giao lại. Phí giao lại tính từ
+                    khoảng cách của tài xế đến vị trí giao lại ( theo quy định của công ty) là 5000 vnđ/ km . Xin lỗi
+                    Anh/ Chị vì sự bất tiện này. Em xin cảm ơn!</p>
+                <button class="btn-copy" onclick="copyText('msg-1')"><i class="fa-regular fa-copy"></i> Sao chép
+                    nhanh</button>
+            </div>
+
+            <button class="btn-back" onclick="showSection('step-0')">Quay lại</button>
+            <button class="btn-main orange" onclick="showSection('step-5')">Tiếp theo (Bước 5)</button>
+
+        </div>
+
+        <div id="step-5" class="hidden text-left">
+            <h2>Bước 5: Sau 60 phút</h2>
+            <div class="step-item">
+                <strong>5.1 Nếu khách đồng ý giao lại:</strong>
+                <p>Nói rõ phí 5.000đ/km và tiến hành giao.</p>
+            </div>
+            <div class="step-item">
+                <strong>5.2 Nếu quá 60p hoặc khách không đồng ý:</strong>
+                <p>Gửi tin nhắn sau:</p>
+                <div class="copy-box">
+                    <p id="msg-2">• Ghi chú cho hệ thống: Khách không đồng ý phí giao lại. Tài xế xử lý đơn hàng theo
+                        quy trình.</p>
+                    <button class="btn-copy" onclick="copyText('msg-2')"><i class="fa-regular fa-copy"></i> Sao chép
+                        nhanh</button>
+                </div>
+            </div>
+            <button class="btn-back" onclick="showSection('step-1-4')">Quay lại</button>
+        </div>
+
+        <div class="copyright">Web developed by KhanhDuy</div>
+    </div>
+
+    <script>
+        function showSection(id) {
+            // Ẩn tất cả các section
+            const sections = ['home-section', 'qr-section', 'step-0', 'step-1-4', 'step-5'];
+            sections.forEach(s => document.getElementById(s).classList.add('hidden'));
+
+            // Hiển thị section được chọn
+            document.getElementById(id).classList.remove('hidden');
+        }
+
+        function copyText(id) {
+            const text = document.getElementById(id).innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                alert("Đã sao chép nội dung!");
+            });
+        }
+    </script>
+
+</body>
+
+</html>
