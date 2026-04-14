@@ -3,119 +3,619 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hỗ trợ Shipper ShopeeFood</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Siêu Trợ Lý SPF Pro - KhanhDuy</title>
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛵</text></svg>">
+    <style>
+        :root {
+            --shopee-orange: #ee4d2d;
+            --bg-dark: #121212;
+            --card-dark: #1e1e1e;
+            --text-main: #e0e0e0;
+            --text-sub: #b0b0b0;
+            --fast: #2ecc71;
+            --normal: #f1c40f;
+            --slow: #e74c3c;
+            --border: #333;
+        }
+
+        html,
+        body {
+            height: 100%;
+            overflow: hidden;
+            margin: 0;
+            font-family: -apple-system, system-ui, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: var(--shopee-orange);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .tab-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px;
+            display: none;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* TÍNH TIỀN THỐI & QR */
+        .calc-card {
+            background: var(--card-dark);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .input-label {
+            display: block;
+            color: var(--text-sub);
+            font-size: 13px;
+            margin-bottom: 5px;
+            margin-left: 5px;
+        }
+
+        .input-money {
+            width: 100%;
+            padding: 12px;
+            font-size: 20px;
+            font-weight: bold;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            text-align: center;
+            outline: none;
+            color: white;
+            background: #252525;
+            box-sizing: border-box;
+        }
+
+        .input-money:focus {
+            border-color: var(--shopee-orange);
+        }
+
+        #resultArea {
+            display: none;
+            margin-top: 20px;
+            margin-bottom: 15px;
+        }
+
+        .result-box {
+            background: #252525;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px dashed var(--shopee-orange);
+        }
+
+        .result-label {
+            font-size: 14px;
+            color: var(--text-sub);
+            margin-bottom: 5px;
+        }
+
+        .result-value {
+            font-size: 32px;
+            font-weight: 800;
+            color: #ff9f43;
+            font-family: monospace;
+        }
+
+        .qr-card {
+            background: white;
+            padding: 10px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+
+        .qr-card p {
+            color: #333;
+            font-weight: bold;
+            margin: 5px 0;
+            font-size: 13px;
+        }
+
+        .qr-img {
+            width: 100%;
+            max-width: 220px;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        /* SỰ CỐ */
+        .card {
+            background: var(--card-dark);
+            margin-bottom: 10px;
+            border-radius: 10px;
+            border-left: 5px solid var(--shopee-orange);
+            overflow: hidden;
+        }
+
+        .card-h {
+            padding: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-main);
+            font-size: 14px;
+        }
+
+        .card-b {
+            padding: 0 15px 15px;
+            display: none;
+            font-size: 13px;
+            color: var(--text-sub);
+            border-top: 1px dashed var(--border);
+            padding-top: 10px;
+        }
+
+        .copy-box {
+            background: #252525;
+            padding: 10px;
+            border-radius: 6px;
+            margin: 8px 0;
+            font-style: italic;
+            border: 1px solid var(--border);
+            word-break: break-word;
+            font-size: 12px;
+            color: #81ecec;
+        }
+
+        .btn-copy {
+            background: #444;
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .step {
+            margin-bottom: 8px;
+            display: block;
+            border-bottom: 1px solid #333;
+            padding-bottom: 5px;
+        }
+
+        .important {
+            color: #ff7675;
+            font-weight: bold;
+        }
+
+        /* QUÁN ĂN */
+        .res-item {
+            background: var(--card-dark);
+            margin-bottom: 8px;
+            border-radius: 12px;
+            border-left: 6px solid #555;
+            overflow: hidden;
+        }
+
+        .res-item.nhanh {
+            border-left-color: var(--fast);
+        }
+
+        .res-item.vừa {
+            border-left-color: var(--normal);
+        }
+
+        .res-item.lâu {
+            border-left-color: var(--slow);
+        }
+
+        .res-main {
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .timer-badge {
+            background: #000;
+            color: #0f0;
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-weight: bold;
+            border: 1px solid #333;
+            display: none;
+        }
+
+        .res-item.vừa .timer-badge,
+        .res-item.lâu .timer-badge {
+            display: inline-block;
+        }
+
+        .res-details {
+            padding: 15px;
+            display: none;
+            background: #252525;
+            border-top: 1px solid var(--border);
+        }
+
+        .res-item.open .res-details {
+            display: block;
+        }
+
+        .btn-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .btn-opt {
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: #333;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .btn-opt.active {
+            background: var(--shopee-orange);
+            border: none;
+        }
+
+        .btn-timer-group {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .btn-timer {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            font-size: 11px;
+            cursor: pointer;
+        }
+
+        /* NAV & SEARCH */
+        .footer-nav {
+            height: 70px;
+            background: #1a1a1a;
+            display: flex;
+            border-top: 1px solid var(--border);
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            color: #666;
+            cursor: pointer;
+        }
+
+        .nav-item.active {
+            color: var(--shopee-orange);
+            font-weight: bold;
+        }
+
+        .nav-item i {
+            font-style: normal;
+            font-size: 24px;
+            margin-bottom: 2px;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 12px;
+            border-radius: 25px;
+            border: 1px solid var(--border);
+            outline: none;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            background: #252525;
+            color: white;
+        }
+    </style>
 </head>
 
 <body>
 
-    <i class="fa-solid fa-utensils bg-logo logo-1"></i>
-    <i class="fa-solid fa-motorcycle bg-logo logo-2"></i>
-    <i class="fa-solid fa-bag-shopping bg-logo logo-3"></i>
-    <i class="fa-solid fa-bowl-food bg-logo logo-4"></i>
+    <header id="headerTitle">TÍNH TIỀN THỐI</header>
 
-    <div class="container">
-        <div class="main-icon">
-            <i class="fa-solid fa-truck-fast"></i>
-        </div>
-
-        <div id="home-section">
-            <h1>Trợ giúp Shipper ShopeeFood</h1>
-            <div class="menu-buttons">
-                <button class="btn-main orange" onclick="showSection('qr-section')">
-                    <i class="fa-solid fa-qrcode"></i> Mã QR thanh toán
-                </button>
-                <button class="btn-main blue" onclick="showSection('step-0')">
-                    <i class="fa-solid fa-clipboard-list"></i> Cách xử lý đơn hàng
-                </button>
+    <div id="tabTinhTien" class="tab-content active">
+        <div class="calc-card">
+            <div class="input-group">
+                <label class="input-label">Tiền thu khách (đơn hàng):</label>
+                <input type="number" id="priceThu" class="input-money" placeholder="Ví dụ: 123" oninput="calcChange()">
             </div>
-        </div>
-
-        <div id="qr-section" class="hidden">
-            <h1>Mã QR Của Tôi</h1>
-            <div class="qr-container">
-                <img src="prthanhtoan.jpg" alt="Mã QR Thanh Toán">
+            <div class="input-group">
+                <label class="input-label">Tiền nhận từ khách:</label>
+                <input type="number" id="priceNhan" class="input-money" placeholder="Ví dụ: 200" oninput="calcChange()">
             </div>
-            <button class="btn-back" onclick="showSection('home-section')">Quay lại</button>
-        </div>
-
-        <div id="step-0" class="hidden">
-            <h1>Xử lý sự cố</h1>
-            <div class="alert-box">
-                Quẹt "ĐÃ ĐẾN ĐIỂM GIAO" và gọi khách khoảng 2 cuộc không bắt máy!!.
-            </div>
-
-            <button class="btn-back" onclick="showSection('home-section')">Quay lại</button>
-            <button class="btn-main orange" onclick="showSection('step-1-4')">Tiếp theo</button>
-        </div>
-
-        <div id="step-1-4" class="hidden text-left">
-            <h2>Quy trình xử lý:</h2>
-            <ul class="step-list">
-                <li><strong>1.</strong> Bình tĩnh.</li>
-                <li><strong>2.</strong> Gọi ít nhất 3 cuộc (đầu và cuối cách nhau 10p). Chụp màn hình có đủ cuộc gọi và
-                    SĐT khách.</li>
-                <li><strong>3.</strong> Chụp ảnh món ăn hiển thị đủ món và số lượng.</li>
-                <li><strong>4.</strong> Báo cáo hệ thống, giữ hàng 60p và gửi tin nhắn sau:</li>
-            </ul>
-
-            <div class="copy-box">
-                <p id="msg-1">Em đã đến điểm giao, đã cố gắng liên hệ cho anh/ chị nhưng không nhận được phản hồi trong
-                    thời gian 10 phút. Em xin phép chuyển đơn sang trạng thái chờ giao trong 60 phút tiếp theo. Anh/ Chị
-                    có nhu cầu nhận hàng vui lòng liên hệ lại cho số điện thoại để được giao lại. Phí giao lại tính từ
-                    khoảng cách của tài xế đến vị trí giao lại ( theo quy định của công ty) là 5000 vnđ/ km . Xin lỗi
-                    Anh/ Chị vì sự bất tiện này. Em xin cảm ơn!</p>
-                <button class="btn-copy" onclick="copyText('msg-1')"><i class="fa-regular fa-copy"></i> Sao chép
-                    nhanh</button>
-            </div>
-
-            <button class="btn-back" onclick="showSection('step-0')">Quay lại</button>
-            <button class="btn-main orange" onclick="showSection('step-5')">Tiếp theo (Bước 5)</button>
-
-        </div>
-
-        <div id="step-5" class="hidden text-left">
-            <h2>Bước 5: Sau 60 phút</h2>
-            <div class="step-item">
-                <strong>5.1 Nếu khách đồng ý giao lại:</strong>
-                <p>Nói rõ phí 5.000đ/km và tiến hành giao.</p>
-            </div>
-            <div class="step-item">
-                <strong>5.2 Nếu quá 60p hoặc khách không đồng ý:</strong>
-                <p>Gửi tin nhắn sau:</p>
-                <div class="copy-box">
-                    <p id="msg-2">• Ghi chú cho hệ thống: Khách không đồng ý phí giao lại. Tài xế xử lý đơn hàng theo
-                        quy trình.</p>
-                    <button class="btn-copy" onclick="copyText('msg-2')"><i class="fa-regular fa-copy"></i> Sao chép
-                        nhanh</button>
+            <div id="resultArea">
+                <div class="result-box">
+                    <div class="result-label">TIỀN THỐI LẠI:</div>
+                    <div id="priceThoi" class="result-value">0 đ</div>
                 </div>
             </div>
-            <button class="btn-back" onclick="showSection('step-1-4')">Quay lại</button>
+            <div class="qr-card">
+                <p>MÃ QR THANH TOÁN</p>
+                <img src="prthanhtoan.jpg" class="qr-img" alt="Mã QR Thanh Toán">
+                <p style="margin-top:5px; font-size:11px; color:#888;">Agribank - VO KHANH DUY</p>
+            </div>
         </div>
-
-        <div class="copyright">Web developed by KhanhDuy</div>
+        <div style="height: 80px;"></div>
     </div>
 
-    <script>
-        function showSection(id) {
-            // Ẩn tất cả các section
-            const sections = ['home-section', 'qr-section', 'step-0', 'step-1-4', 'step-5'];
-            sections.forEach(s => document.getElementById(s).classList.add('hidden'));
+    <div id="tabSuCo" class="tab-content">
+        <input type="text" class="search-box" placeholder="🔍 Tìm sự cố nhanh..." onkeyup="filterSuCo(this.value)">
+        <div id="suCoList">
 
-            // Hiển thị section được chọn
-            document.getElementById(id).classList.remove('hidden');
+            <div class="card">
+                <div class="card-h" onclick="toggleCard(this)">📞 Không liên lạc được Khách <span>▼</span></div>
+                <div class="card-b">
+                    <span class="step">1. Chắc chắn vuốt <b>"Đã đến điểm giao"</b>.</span>
+                    <span class="step">2. Gọi ít nhất <b>3 cuộc</b> (đầu và cuối cách nhau 10p). Chụp lịch sử cuộc gọi
+                        (đủ SĐT khách).</span>
+
+                    <span class="step">3. Chat với khách (Sao chép):
+                        <div class="copy-box" id="msgChatKhach">Em đã đến điểm giao, đã cố gắng liên hệ cho anh/ chị
+                            nhưng không nhận được phản hồi trong thời gian 10 phút. Em xin phép chuyển đơn sang trạng
+                            thái chờ giao trong 60 phút tiếp theo. Anh/ Chị có nhu cầu nhận hàng vui lòng liên hệ lại
+                            cho số điện thoại để được giao lại. Phí giao lại tính từ khoảng cách của tài xế đến vị trí
+                            giao lại ( theo quy định của công ty) là 5000 vnđ/ km . Xin lỗi Anh/ Chị vì sự bất tiện này.
+                            Em xin cảm ơn!</div>
+                        <button class="btn-copy" onclick="copyTxt('msgChatKhach')">SAO CHÉP CHAT KHÁCH</button>
+                    </span>
+
+                    <span class="step">4. Gửi báo cáo "Không liên lạc được" và chụp lịch sử cuộc gọi + món ăn đầy đủ số
+                        lượng:
+                        <div class="copy-box" id="msgBaoCao">Tài xế đã đến điểm giao, đã thực hiện ít nhất 3 cuộc gọi
+                            trong vòng 10p kể từ khi đến điểm giao nhưng không thể liên lạc được với khách hàng. Tài xế
+                            chuyển sang đơn rủi ro 60p</div>
+                        <button class="btn-copy" onclick="copyTxt('msgBaoCao')">SAO CHÉP BÁO CÁO</button>
+                    </span>
+
+                    <span class="step">5. Sau 60p chuyển sang <b>Đơn rủi ro</b> (Chụp ảnh món ăn):
+                        <div class="copy-box" id="msgGhiChuHeThong">• Ghi chú cho hệ thống: Khách không đồng ý phí giao
+                            lại. Tài xế xử lý đơn hàng theo quy trình.</div>
+                        <button class="btn-copy" onclick="copyTxt('msgGhiChuHeThong')">SAO CHÉP GHI CHÚ RỦI RO</button>
+                    </span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-h" onclick="toggleCard(this)">❌ Khách muốn HỦY ĐƠN <span>▼</span></div>
+                <div class="card-b">
+                    <span class="step">1. <b>Hết món:</b> Từ chối đơn trên App. Nếu nút ẩn -> Chat hỗ trợ gửi ảnh màn
+                        hình hoặc lịch sử gọi khách đồng ý hủy.</span>
+                    <span class="step">2. <b>Lý do khác:</b> Thuyết phục khách. Nếu không được:
+                        <br>- Chưa lấy món: Báo quán ngưng làm + Chat hỗ trợ.
+                        <br>- Đã lấy món: Đến điểm giao, thuyết phục lần cuối rằng tài xế đã đến và App không thể
+                        hủy.</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-h" onclick="toggleCard(this)">⏳ Quán chuẩn bị món QUÁ LÂU <span>▼</span></div>
+                <div class="card-b">
+                    <span class="step">1. Đợi <b>quá 20p</b>: Xác nhận thời gian với quán và báo khách.</span>
+                    <span class="step">2. Mẫu báo khách:
+                        <div class="copy-box" id="msgWait">Quán đang chuẩn bị đơn hàng, dự kiến có món trong x phút nữa.
+                        </div>
+                        <button class="btn-copy" onclick="copyTxt('msgWait')">COPY MẪU ĐỢI</button>
+                    </span>
+                    <span class="step">3. Sau 20p có thể Từ chối đơn lý do "Quán làm lâu" (không mất hiệu suất).</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-h" onclick="toggleCard(this)">🍲 Quán HẾT MÓN / SAI GIÁ <span>▼</span></div>
+                <div class="card-b">
+                    <span class="step">1. Gọi khách xác nhận -> Chỉnh sửa trên App.</span>
+                    <span class="step">2. Nếu mục "Chỉnh sửa giá" bị ẩn -> Nhờ quán hỗ trợ hủy. Nếu quán không hủy được
+                        -> Chat hỗ trợ.</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-h" onclick="toggleCard(this)">🏠 Khách muốn ĐỔI MÓN / SAI ĐỊA CHỈ <span>▼</span></div>
+                <div class="card-b">
+                    <span class="step">1. <b>Đổi món:</b> App không hỗ trợ. Thuyết phục khách nhận đơn cũ.</span>
+                    <span class="step">2. <b>Sai địa chỉ:</b> Thuyết phục giao điểm cũ. Mẫu báo sai địa chỉ:
+                        <div class="copy-box" id="msgSaiDc">Dạ hiện tại địa chỉ mình thay đổi nằm ngoài khu vực hỗ trợ
+                            của em. Anh/Chị vui lòng liên hệ tổng đài hoặc hủy đơn giúp em ạ.</div>
+                        <button class="btn-copy" onclick="copyTxt('msgSaiDc')">COPY MẪU SAI ĐC</button>
+                    </span>
+                </div>
+            </div>
+
+        </div>
+        <div style="height: 80px;"></div>
+    </div>
+
+    <div id="tabQuanAn" class="tab-content">
+        <div
+            style="background:var(--card-dark); padding:15px; border-radius:12px; margin-bottom:10px; border: 1px solid var(--border);">
+            <input type="text" id="resInput" class="search-box" style="margin-bottom: 10px;"
+                placeholder="Tên quán mới...">
+            <button onclick="addRes()"
+                style="width:100%; padding:12px; background:var(--shopee-orange); color:white; border:none; border-radius:8px; font-weight:bold;">+
+                THÊM QUÁN</button>
+        </div>
+        <input type="text" class="search-box" placeholder="🔍 Tìm tên quán..." oninput="renderRes()">
+        <div id="resList"></div>
+        <div style="height: 80px;"></div>
+    </div>
+
+    <nav class="footer-nav">
+        <div class="nav-item active" onclick="switchTab('TinhTien', this, 'TÍNH TIỀN THỐI')"><i>💰</i>Tiền</div>
+        <div class="nav-item" onclick="switchTab('SuCo', this, 'SỰ CỐ')"><i>📋</i>Sự cố</div>
+        <div class="nav-item" onclick="switchTab('QuanAn', this, 'QUÁN ĂN')"><i>🛵</i>Quán</div>
+    </nav>
+
+    <script>
+        let restaurants = JSON.parse(localStorage.getItem('SF_DARK_V10')) || [];
+
+        function calcChange() {
+            let thuInput = document.getElementById('priceThu');
+            let nhanInput = document.getElementById('priceNhan');
+            let resArea = document.getElementById('resultArea');
+            let thu = parseInt(thuInput.value) || 0;
+            let nhanText = nhanInput.value;
+            let nhan = parseInt(nhanText) || 0;
+
+            if (nhanText === "") { resArea.style.display = "none"; return; }
+            resArea.style.display = "block";
+            let ketQua = nhan - thu;
+            let display = document.getElementById('priceThoi');
+            if (ketQua < 0) {
+                display.innerText = "Thiếu " + Math.abs(ketQua) + ".000 đ";
+                display.style.color = "#e74c3c";
+            } else {
+                display.innerText = ketQua + ".000 đ";
+                display.style.color = "#ff9f43";
+            }
         }
 
-        function copyText(id) {
-            const text = document.getElementById(id).innerText;
-            navigator.clipboard.writeText(text).then(() => {
-                alert("Đã sao chép nội dung!");
+        function switchTab(id, el, title) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById('tab' + id).classList.add('active');
+            el.classList.add('active');
+            document.getElementById('headerTitle').innerText = title;
+        }
+
+        function copyTxt(id) {
+            let txt = document.getElementById(id).innerText;
+            navigator.clipboard.writeText(txt).then(() => alert("Đã copy nguyên văn!"));
+        }
+
+        function toggleCard(h) {
+            let b = h.nextElementSibling;
+            b.style.display = (b.style.display === "block") ? "none" : "block";
+        }
+
+        function filterSuCo(val) {
+            document.querySelectorAll('#suCoList .card').forEach(c => {
+                c.style.display = c.innerText.toLowerCase().includes(val.toLowerCase()) ? "block" : "none";
             });
         }
-    </script>
 
+        function addRes() {
+            let name = document.getElementById('resInput').value.trim();
+            if (!name) return;
+            restaurants.unshift({ id: Date.now(), name, status: 'Nhanh', elapsed: 0, isRunning: false, startTime: null });
+            document.getElementById('resInput').value = '';
+            save();
+        }
+
+        function renderRes() {
+            let query = document.querySelector('#tabQuanAn .search-box').value.toLowerCase();
+            let container = document.getElementById('resList');
+            container.innerHTML = '';
+            restaurants.filter(r => r.name.toLowerCase().includes(query)).forEach(r => {
+                let div = document.createElement('div');
+                div.className = `res-item ${r.status.toLowerCase()}`;
+                div.innerHTML = `
+                <div class="res-main" onclick="this.parentElement.classList.toggle('open')">
+                    <b>${r.name}</b>
+                    <div><span class="timer-badge" id="badge-${r.id}">${formatTime(r.elapsed)}</span> ▼</div>
+                </div>
+                <div class="res-details">
+                    <div class="btn-grid">
+                        <button class="btn-opt ${r.status === 'Nhanh' ? 'active' : ''}" onclick="updateSt(${r.id},'Nhanh')">Nhanh</button>
+                        <button class="btn-opt ${r.status === 'Vừa' ? 'active' : ''}" onclick="updateSt(${r.id},'Vừa')">Vừa</button>
+                        <button class="btn-opt ${r.status === 'Lâu' ? 'active' : ''}" onclick="updateSt(${r.id},'Lâu')">Lâu</button>
+                    </div>
+                    ${r.status !== 'Nhanh' ? `
+                        <div class="btn-timer-group">
+                            <button class="btn-timer" style="background:#2ecc71" onclick="timerCtrl(${r.id}, true)">BẮT ĐẦU</button>
+                            <button class="btn-timer" style="background:#e67e22" onclick="timerCtrl(${r.id}, false)">DỪNG</button>
+                            <button class="btn-timer" style="background:#95a5a6" onclick="resetT(${r.id})">RESET</button>
+                        </div>
+                    ` : ''}
+                    <button onclick="delRes(${r.id})" style="color:#ff7675; border:none; background:none; width:100%; text-align:right; margin-top:10px; font-size:11px;">Xóa quán</button>
+                </div>`;
+                container.appendChild(div);
+            });
+        }
+
+        function formatTime(ms) {
+            let s = Math.floor(ms / 1000);
+            return `${Math.floor(s / 60).toString().padStart(2, '0')}:${(s % 60).toString().padStart(2, '0')}`;
+        }
+
+        function updateSt(id, s) {
+            let r = restaurants.find(x => x.id === id);
+            r.status = s;
+            if (s === 'Nhanh') { r.isRunning = false; r.elapsed = 0; }
+            save();
+        }
+
+        function timerCtrl(id, start) {
+            let r = restaurants.find(x => x.id === id);
+            if (start) { r.isRunning = true; r.startTime = Date.now() - r.elapsed; }
+            else { r.isRunning = false; }
+            save();
+        }
+
+        function resetT(id) {
+            let r = restaurants.find(x => x.id === id);
+            r.isRunning = false; r.elapsed = 0; r.startTime = null;
+            save();
+        }
+
+        function delRes(id) { if (confirm('Xóa quán này?')) { restaurants = restaurants.filter(x => x.id !== id); save(); } }
+        function save() { localStorage.setItem('SF_DARK_V10', JSON.stringify(restaurants)); renderRes(); }
+
+        setInterval(() => {
+            restaurants.forEach(r => {
+                if (r.isRunning && r.startTime) {
+                    r.elapsed = Date.now() - r.startTime;
+                    let b = document.getElementById(`badge-${r.id}`);
+                    if (b) b.innerText = formatTime(r.elapsed);
+                }
+            });
+        }, 1000);
+
+        renderRes();
+    </script>
 </body>
 
 </html>
