@@ -4,9 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Siêu Trợ Lý SPF Pro - KhanhDuy</title>
+    <title>Siêu Trợ Lý SF Pro - KhanhDuy</title>
+
     <link rel="icon"
-        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛵</text></svg>">
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💰</text></svg>">
+
     <style>
         :root {
             --shopee-orange: #ee4d2d;
@@ -58,7 +60,6 @@
             display: block;
         }
 
-        /* TÍNH TIỀN THỐI & QR */
         .calc-card {
             background: var(--card-dark);
             padding: 20px;
@@ -95,6 +96,12 @@
 
         .input-money:focus {
             border-color: var(--shopee-orange);
+        }
+
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
         }
 
         #resultArea {
@@ -146,7 +153,6 @@
             border-radius: 8px;
         }
 
-        /* SỰ CỐ */
         .card {
             background: var(--card-dark);
             margin-bottom: 10px;
@@ -184,6 +190,7 @@
             word-break: break-word;
             font-size: 12px;
             color: #81ecec;
+            line-height: 1.4;
         }
 
         .btn-copy {
@@ -200,18 +207,12 @@
         }
 
         .step {
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             display: block;
             border-bottom: 1px solid #333;
-            padding-bottom: 5px;
+            padding-bottom: 8px;
         }
 
-        .important {
-            color: #ff7675;
-            font-weight: bold;
-        }
-
-        /* QUÁN ĂN */
         .res-item {
             background: var(--card-dark);
             margin-bottom: 8px;
@@ -306,7 +307,6 @@
             cursor: pointer;
         }
 
-        /* NAV & SEARCH */
         .footer-nav {
             height: 70px;
             background: #1a1a1a;
@@ -361,11 +361,13 @@
         <div class="calc-card">
             <div class="input-group">
                 <label class="input-label">Tiền thu khách (đơn hàng):</label>
-                <input type="number" id="priceThu" class="input-money" placeholder="Ví dụ: 123" oninput="calcChange()">
+                <input type="number" id="priceThu" class="input-money" placeholder="Ví dụ: 123" inputmode="numeric"
+                    oninput="calcChange()" onkeypress="return isNumberKey(event)">
             </div>
             <div class="input-group">
                 <label class="input-label">Tiền nhận từ khách:</label>
-                <input type="number" id="priceNhan" class="input-money" placeholder="Ví dụ: 200" oninput="calcChange()">
+                <input type="number" id="priceNhan" class="input-money" placeholder="Ví dụ: 200" inputmode="numeric"
+                    oninput="calcChange()" onkeypress="return isNumberKey(event)">
             </div>
             <div id="resultArea">
                 <div class="result-box">
@@ -375,75 +377,65 @@
             </div>
             <div class="qr-card">
                 <p>MÃ QR THANH TOÁN</p>
-                <img src="prthanhtoan.jpg" class="qr-img" alt="Mã QR Thanh Toán">
+                <img src="prthanhtoan.jpg" class="qr-img" alt="Mã QR">
                 <p style="margin-top:5px; font-size:11px; color:#888;">Agribank - VO KHANH DUY</p>
             </div>
         </div>
-        <div style="height: 80px;"></div>
     </div>
 
     <div id="tabSuCo" class="tab-content">
-        <input type="text" class="search-box" placeholder="🔍 Tìm sự cố nhanh..." onkeyup="filterSuCo(this.value)">
+        <input type="text" class="search-box" id="searchSuCo" placeholder="🔍 Tìm sự cố nhanh..."
+            oninput="filterSuCo()">
         <div id="suCoList">
-
             <div class="card">
                 <div class="card-h" onclick="toggleCard(this)">📞 Không liên lạc được Khách <span>▼</span></div>
                 <div class="card-b">
                     <span class="step">1. Chắc chắn vuốt <b>"Đã đến điểm giao"</b>.</span>
-                    <span class="step">2. Gọi ít nhất <b>3 cuộc</b> (đầu và cuối cách nhau 10p). Chụp lịch sử cuộc gọi
-                        (đủ SĐT khách).</span>
-
-                    <span class="step">3. Chat với khách (Sao chép):
-                        <div class="copy-box" id="msgChatKhach">Em đã đến điểm giao, đã cố gắng liên hệ cho anh/ chị
-                            nhưng không nhận được phản hồi trong thời gian 10 phút. Em xin phép chuyển đơn sang trạng
-                            thái chờ giao trong 60 phút tiếp theo. Anh/ Chị có nhu cầu nhận hàng vui lòng liên hệ lại
-                            cho số điện thoại để được giao lại. Phí giao lại tính từ khoảng cách của tài xế đến vị trí
-                            giao lại ( theo quy định của công ty) là 5000 vnđ/ km . Xin lỗi Anh/ Chị vì sự bất tiện này.
-                            Em xin cảm ơn!</div>
-                        <button class="btn-copy" onclick="copyTxt('msgChatKhach')">SAO CHÉP CHAT KHÁCH</button>
+                    <span class="step">2. Gọi ít nhất 3 cuộc (đầu và cuối cách nhau 10p) và chụp lịch sử cuộc gọi đủ SĐT
+                        khách.</span>
+                    <span class="step">3. Chat với khách:
+                        <div class="copy-box" id="msgChatK">Em đã đến điểm giao, đã cố gắng liên hệ cho anh/ chị nhưng
+                            không nhận được phản hồi trong thời gian 10 phút. Em xin phép chuyển đơn sang trạng thái chờ
+                            giao trong 60 phút tiếp theo. Anh/ Chị có nhu cầu nhận hàng vui lòng liên hệ lại cho số điện
+                            thoại để được giao lại. Phí giao lại tính từ khoảng cách của tài xế đến vị trí giao lại (
+                            theo quy định của công ty) là 5000 vnđ/ km . Xin lỗi Anh/ Chị vì sự bất tiện này. Em xin cảm
+                            ơn!</div>
+                        <button class="btn-copy" onclick="copyTxt('msgChatK')">SAO CHÉP CHAT KHÁCH</button>
                     </span>
-
-                    <span class="step">4. Gửi báo cáo "Không liên lạc được" và chụp lịch sử cuộc gọi + món ăn đầy đủ số
-                        lượng:
-                        <div class="copy-box" id="msgBaoCao">Tài xế đã đến điểm giao, đã thực hiện ít nhất 3 cuộc gọi
+                    <span class="step">4. Gửi báo cáo "Không liên lạc được" và chèn ảnh lịch sử cuộc gọi + món ăn đầy đủ
+                        số lượng:
+                        <div class="copy-box" id="msgReport">Tài xế đã đến điểm giao, đã thực hiện ít nhất 3 cuộc gọi
                             trong vòng 10p kể từ khi đến điểm giao nhưng không thể liên lạc được với khách hàng. Tài xế
                             chuyển sang đơn rủi ro 60p</div>
-                        <button class="btn-copy" onclick="copyTxt('msgBaoCao')">SAO CHÉP BÁO CÁO</button>
+                        <button class="btn-copy" onclick="copyTxt('msgReport')">SAO CHÉP BÁO CÁO</button>
                     </span>
-
-                    <span class="step">5. Sau 60p chuyển sang <b>Đơn rủi ro</b> (Chụp ảnh món ăn):
-                        <div class="copy-box" id="msgGhiChuHeThong">• Ghi chú cho hệ thống: Khách không đồng ý phí giao
-                            lại. Tài xế xử lý đơn hàng theo quy trình.</div>
-                        <button class="btn-copy" onclick="copyTxt('msgGhiChuHeThong')">SAO CHÉP GHI CHÚ RỦI RO</button>
+                    <span class="step">5. Chuyển đơn rủi ro (Chụp món ăn đầy đủ số lượng):
+                        <div class="copy-box" id="msgNote">• Ghi chú cho hệ thống: Khách không đồng ý phí giao lại. Tài
+                            xế xử lý đơn hàng theo quy trình.</div>
+                        <button class="btn-copy" onclick="copyTxt('msgNote')">SAO CHÉP GHI CHÚ</button>
                     </span>
                 </div>
             </div>
-
             <div class="card">
                 <div class="card-h" onclick="toggleCard(this)">❌ Khách muốn HỦY ĐƠN <span>▼</span></div>
                 <div class="card-b">
-                    <span class="step">1. <b>Hết món:</b> Từ chối đơn trên App. Nếu nút ẩn -> Chat hỗ trợ gửi ảnh màn
-                        hình hoặc lịch sử gọi khách đồng ý hủy.</span>
-                    <span class="step">2. <b>Lý do khác:</b> Thuyết phục khách. Nếu không được:
-                        <br>- Chưa lấy món: Báo quán ngưng làm + Chat hỗ trợ.
-                        <br>- Đã lấy món: Đến điểm giao, thuyết phục lần cuối rằng tài xế đã đến và App không thể
-                        hủy.</span>
+                    <span class="step">1. <b>Hết món:</b> Từ chối đơn trên app. Nếu nút ẩn -> Chat hỗ trợ gửi ảnh màn
+                        hình/lịch sử gọi khách đồng ý hủy.</span>
+                    <span class="step">2. <b>Lý do khác:</b> Thuyết phục khách. Nếu không được: Báo quán ngưng làm (nếu
+                        chưa lấy món) hoặc đến điểm giao thuyết phục tiếp.</span>
                 </div>
             </div>
-
             <div class="card">
-                <div class="card-h" onclick="toggleCard(this)">⏳ Quán chuẩn bị món QUÁ LÂU <span>▼</span></div>
+                <div class="card-h" onclick="toggleCard(this)">⏳ Quán làm món QUÁ LÂU <span>▼</span></div>
                 <div class="card-b">
-                    <span class="step">1. Đợi <b>quá 20p</b>: Xác nhận thời gian với quán và báo khách.</span>
-                    <span class="step">2. Mẫu báo khách:
-                        <div class="copy-box" id="msgWait">Quán đang chuẩn bị đơn hàng, dự kiến có món trong x phút nữa.
-                        </div>
-                        <button class="btn-copy" onclick="copyTxt('msgWait')">COPY MẪU ĐỢI</button>
-                    </span>
-                    <span class="step">3. Sau 20p có thể Từ chối đơn lý do "Quán làm lâu" (không mất hiệu suất).</span>
+                    <span class="step">1. Đợi <b>quá 20p</b>: Xác nhận thời gian với quán và báo khách qua mẫu:</span>
+                    <div class="copy-box" id="msgWait">Quán đang chuẩn bị đơn hàng, dự kiến có món trong x phút nữa.
+                    </div>
+                    <button class="btn-copy" onclick="copyTxt('msgWait')">SAO CHÉP BÁO KHÁCH</button>
+                    <span class="step" style="margin-top:10px;">2. Sau 20p có thể Từ chối đơn lý do "Quán làm lâu"
+                        (không mất hiệu suất).</span>
                 </div>
             </div>
-
             <div class="card">
                 <div class="card-h" onclick="toggleCard(this)">🍲 Quán HẾT MÓN / SAI GIÁ <span>▼</span></div>
                 <div class="card-b">
@@ -452,21 +444,17 @@
                         -> Chat hỗ trợ.</span>
                 </div>
             </div>
-
             <div class="card">
                 <div class="card-h" onclick="toggleCard(this)">🏠 Khách muốn ĐỔI MÓN / SAI ĐỊA CHỈ <span>▼</span></div>
                 <div class="card-b">
-                    <span class="step">1. <b>Đổi món:</b> App không hỗ trợ. Thuyết phục khách nhận đơn cũ.</span>
-                    <span class="step">2. <b>Sai địa chỉ:</b> Thuyết phục giao điểm cũ. Mẫu báo sai địa chỉ:
+                    <span class="step">1. <b>Sai địa chỉ:</b> Thuyết phục giao điểm cũ. Mẫu báo sai địa chỉ:
                         <div class="copy-box" id="msgSaiDc">Dạ hiện tại địa chỉ mình thay đổi nằm ngoài khu vực hỗ trợ
                             của em. Anh/Chị vui lòng liên hệ tổng đài hoặc hủy đơn giúp em ạ.</div>
                         <button class="btn-copy" onclick="copyTxt('msgSaiDc')">COPY MẪU SAI ĐC</button>
                     </span>
                 </div>
             </div>
-
         </div>
-        <div style="height: 80px;"></div>
     </div>
 
     <div id="tabQuanAn" class="tab-content">
@@ -478,9 +466,8 @@
                 style="width:100%; padding:12px; background:var(--shopee-orange); color:white; border:none; border-radius:8px; font-weight:bold;">+
                 THÊM QUÁN</button>
         </div>
-        <input type="text" class="search-box" placeholder="🔍 Tìm tên quán..." oninput="renderRes()">
+        <input type="text" id="searchQuan" class="search-box" placeholder="🔍 Tìm tên quán..." oninput="renderRes()">
         <div id="resList"></div>
-        <div style="height: 80px;"></div>
     </div>
 
     <nav class="footer-nav">
@@ -492,25 +479,23 @@
     <script>
         let restaurants = JSON.parse(localStorage.getItem('SF_DARK_V10')) || [];
 
-        function calcChange() {
-            let thuInput = document.getElementById('priceThu');
-            let nhanInput = document.getElementById('priceNhan');
-            let resArea = document.getElementById('resultArea');
-            let thu = parseInt(thuInput.value) || 0;
-            let nhanText = nhanInput.value;
-            let nhan = parseInt(nhanText) || 0;
+        function isNumberKey(evt) {
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if (charCode > 31 && (charCode < 48 || charCode > 57)) return false;
+            return true;
+        }
 
-            if (nhanText === "") { resArea.style.display = "none"; return; }
+        function calcChange() {
+            let thu = parseInt(document.getElementById('priceThu').value) || 0;
+            let nhanTxt = document.getElementById('priceNhan').value;
+            let nhan = parseInt(nhanTxt) || 0;
+            let resArea = document.getElementById('resultArea');
+            if (nhanTxt === "") { resArea.style.display = "none"; return; }
             resArea.style.display = "block";
             let ketQua = nhan - thu;
             let display = document.getElementById('priceThoi');
-            if (ketQua < 0) {
-                display.innerText = "Thiếu " + Math.abs(ketQua) + ".000 đ";
-                display.style.color = "#e74c3c";
-            } else {
-                display.innerText = ketQua + ".000 đ";
-                display.style.color = "#ff9f43";
-            }
+            display.innerText = (ketQua < 0 ? "Thiếu " + Math.abs(ketQua) : ketQua) + ".000 đ";
+            display.style.color = ketQua < 0 ? "#e74c3c" : "#ff9f43";
         }
 
         function switchTab(id, el, title) {
@@ -523,7 +508,7 @@
 
         function copyTxt(id) {
             let txt = document.getElementById(id).innerText;
-            navigator.clipboard.writeText(txt).then(() => alert("Đã copy nguyên văn!"));
+            navigator.clipboard.writeText(txt).then(() => alert("Đã copy!"));
         }
 
         function toggleCard(h) {
@@ -531,9 +516,10 @@
             b.style.display = (b.style.display === "block") ? "none" : "block";
         }
 
-        function filterSuCo(val) {
+        function filterSuCo() {
+            let val = document.getElementById('searchSuCo').value.toLowerCase();
             document.querySelectorAll('#suCoList .card').forEach(c => {
-                c.style.display = c.innerText.toLowerCase().includes(val.toLowerCase()) ? "block" : "none";
+                c.style.display = c.innerText.toLowerCase().includes(val) ? "block" : "none";
             });
         }
 
@@ -546,7 +532,7 @@
         }
 
         function renderRes() {
-            let query = document.querySelector('#tabQuanAn .search-box').value.toLowerCase();
+            let query = document.getElementById('searchQuan').value.toLowerCase();
             let container = document.getElementById('resList');
             container.innerHTML = '';
             restaurants.filter(r => r.name.toLowerCase().includes(query)).forEach(r => {
